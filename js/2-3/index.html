@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>2-2</title>
+</head>
+
+<body id="B" bgcolor="AAAAAA" onclick="rodEl()" style="height:600px">
+
+	<h1 id="HH" onclick="H_l()">ЦВЕТ</h1>
+	<div id="k1" onclick="D_l()">
+		<div id="k2" style="background-color:#ff0" onclick="D_2(this)"></div>
+    </div>
+    
+</body>
+
+
+<script>
+    function rodEl() {
+        var o = document.all.B.bgColor;
+        o = "#777777" != o ? "#777777" : "AAAAAA", document.all.B.bgColor = o
+    }
+
+    function D_l() {
+        window.event.cancelBubble = true;
+        var o = document.all.k1.style.backgroundColor;
+        o = "red" != o ? "red" : "green", document.all.k1.style.backgroundColor = o
+    }
+
+    function D_2(o) {
+        window.event.cancelBubble = true;
+        var l = o.style.backgroundColor;
+        l = "#ff00ff" == l || "rgb(255, 0, 255)" == l ? "#00ffff" : "ff00ff", o.style.backgroundColor = l
+    }
+
+    function H_l() {
+        window.event.cancelBubble = true;
+        var o = document.all.HH.style.color;
+        o = "#aa00aa" == o || "rgb(170, 0, 170)" == o ? "#00ffff" : "#aa00aa", document.all.HH.style.color = o
+    }
+</script>
+
+</html>

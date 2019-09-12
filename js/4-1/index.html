@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>2-2</title>
+
+    <script>
+
+        var drop_2 = new Image();
+        drop_2.src = "image/back-2.jpg";
+
+        var drop_1 = new Image();
+        drop_1.src = "image/back-1.jpg";
+
+        var drop_0 = new Image();
+        drop_0.src = "image/back.jpg";
+        
+        var images = {
+            "drop_2" : drop_2.src,
+            "drop_1" : drop_1.src,
+            "0" : drop_0.src
+        }
+
+    </script>
+
+</head>
+<body>
+   
+
+    <div id="image_container" class="image_container" style="background-image: url('image/back.jpg');">
+        <div class="select_container">
+            <select name="function" id="image_select" class="image_select" onChange="change_image()">
+                <option value="0">Выберите изображение...</option>
+                <option value="drop_1">Капля</option>
+                <option value="drop_2">Еще одна капля</option>
+            </select>
+           
+        </div>
+        
+    </div>
+
+
+
+    <script>
+        function change_image(){
+            var value = document.getElementById("image_select").value;
+            document.getElementById("image_container").style.backgroundImage = "url(" + images[value] + ")";
+           
+        }
+    </script>
+</body>
+
+            
+            
+</html>

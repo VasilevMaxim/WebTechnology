@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>4-2</title>
+
+</head>
+<body>
+   
+    <section>
+
+        <h2>Построение эллипса</h2>
+        <span class="label">Горизонтальная полуось (а)</span>
+        <input name = "axis_a" type="text" id = "axis_a" placeholder="0">
+
+        <span class="label">Вертикальная полуось (b)</span>
+        <input name = "axis_b" type="text" id = "axis_b" placeholder="0">
+
+        <button class="submit" onclick="draw()">Вычислить</button>
+
+        <h2>Draw-By-Point</h2>
+        <div id="point_container" style="height: 500px; width: 500px"></div>
+
+        <h2>Canvas</h2>
+        <canvas id="main_canvas" width="500" height="500"></canvas>
+
+        <h2>SVG</h2>
+        <svg id="svg_container" height="500" width="500"></svg>
+
+    </section>
+
+    <script>
+        CanvasRenderingContext2D.prototype.drawEllipse = function (x, y, a, b) {
+            this.save();
+            this.beginPath();
+            this.translate(x, y);
+            this.scale(a / b, 1);
+            this.arc(0, 0, b, 0, Math.PI * 2, true);
+            this.restore();
+            this.closePath();
+        }
+
+        function line(x1, y1, x2, y2, n, container) {
+            var ready_line = "";
+            var one_point = '<img src="Tochka.bmp" width=' + n + ' height=' + n + ' style="position:absolute;';
+          
+            var x = x1;
+            var y = y1;
+            while (x <= x2 || y < y2) {
+                ready_line += one_point + 'top:' + y + 'px; left:' + x + 'px">';
+
+                if (x <= x2)
+                    x++;
+                if (y < y2)
+                    y++;
+            }
+            container.innerHTML += ready_line;
+        }
+
+        function drawEllipse_byPoint (x1, y1, a, b, container) {
+            var x;
+            var y;
+            var ready_line = "";
+            var one_point = '<img src="Tochka.bmp" width = 1 height = 1 style="position:absolute;';
+
+            for (var t = 0; t < 6.2830; t+=0.005){
+                x = a * Math.cos(t); 
+                y = b * Math.sin(t);
+
+                ready_line += one_point + 'top:' + (y1 + y) + 'px; left:' + (x1 + x) + 'px">';
+            }
+            container.innerHTML += ready_line;
+        }
+        
+
+        function draw(){
+
+            var a = document.getElementById("axis_a").value;
+            var b = document.getElementById("axis_b").value;
+
+
+            // Рисование по точкам
+            var point_container = document.getElementById('point_container');
+            point_container.innerHTML = "";
+
+            line(0, 249, 500, 249, 1, point_container);
+            line(249, 0, 249, 500, 1, point_container);
+            drawEllipse_byPoint(250, 250, a, b, point_container);
+
+
+            // Рисование SVG
+            var svg_container = document.getElementById('svg_container');
+            svg_container.innerHTML = '';
+
+            svg_container.innerHTML = `
+            <line x1="0" y1="249.5" x2="500" y2="249.5" style="stroke:#000; stroke-width: 1"/>
+            <line x1="249.5" y1="0" x2="249.5" y2="500" style="stroke:#000; stroke-width: 1"/>
+            <ellipse cx="250" cy="250" rx="` + a + `" ry="` + b + `" style="fill: none; stroke:#000; stroke-width: 1" />
+            `;
+
+
+            // Рисование в Canvas
+            var main_canvas = document.getElementById("main_canvas");
+            var main_canvas_context = main_canvas.getContext("2d");
+        
+            main_canvas_context.fillStyle = "#FFFFFF";
+            main_canvas_context.fillRect(0, 0, 500, 500);
+            
+            main_canvas_context.beginPath();
+            main_canvas_context.moveTo(0, 249.5);
+            main_canvas_context.lineTo(500, 249.5);
+            main_canvas_context.moveTo(249.5, 0);
+            main_canvas_context.lineTo(249.5, 500);
+            main_canvas_context.closePath();
+
+            main_canvas_context.strokeStyle = "#000";
+            main_canvas_context.stroke();
+
+            main_canvas_context.drawEllipse(249.5, 249.5, a, b); 
+            main_canvas_context.stroke();
+        }
+       
+    </script>
+
+
+</body>
+
+            
+            
+</html>

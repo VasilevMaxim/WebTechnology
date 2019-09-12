@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>1-1</title>
+</head>
+<body>
+    <section>
+        <h2 id="h2_label" style="color: #FFFFFF; background-color: #0067D5">ДОСТУП К СВОЙСТВАМ И МЕТОДАМ</h2>
+        <p id="p_label" style="color: #d53636; background-color: #FFFFFF">Коллекция all</p>
+        <div id="div_label" style="color: #FFFFFF; background-color: #0067D5">Метод getElementById()</div>
+    </section>
+</body>
+
+<script>
+
+    var h2_label = document.getElementById("h2_label");
+    var p_label = document.all.p_label;
+    var div_label = document.getElementById("div_label");
+
+
+    h2_label.addEventListener("click", function(){
+        
+        if (this.style.color == "rgb(255, 255, 255)"){
+            this.style.color = "rgb(0, 0, 0)";
+            this.style.backgroundColor = "rgb(213, 200, 82)";
+        }
+        else{
+            this.style.color = "rgb(255, 255, 255)";
+            this.style.backgroundColor = "rgb(0, 103, 213)";
+        }
+        
+    });
+
+    div_label.addEventListener("click", function(){
+        if (this.style.color == "rgb(255, 255, 255)"){
+            this.style.color = "rgb(0, 0, 0)";
+            this.style.backgroundColor = "rgb(213, 200, 82)";
+        }
+        else{
+            this.style.color = "rgb(255, 255, 255)";
+            this.style.backgroundColor = "rgb(0, 103, 213)";
+        }
+    });
+
+    p_label.addEventListener("click", function(){
+
+        if (this.style.color == "rgb(255, 255, 255)"){
+            this.style.color = "rgb(212, 53, 53)";
+            this.style.backgroundColor = "rgb(255, 255, 255)";
+        }
+        else{
+            this.style.color = "rgb(255, 255, 255)";
+            this.style.backgroundColor = "rgb(77, 213, 75)";
+        }
+    });
+
+</script>
+</html>

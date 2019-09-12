@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>2-2</title>
+</head>
+<body onClick="change_element(event)">
+   
+
+    <div id="image_container" class="image_container" style="background-image: url('image/back.jpg');">
+        <div class="label_container">
+            <div id="label" class="label">Надпись</div>
+        </div>
+    </div>
+
+
+
+    <script>
+        function change_element(_event){
+            var element = _event.target;
+            var element_id = element.id;
+
+            switch (element_id) {
+                case "image_container":
+                    var object = document.getElementById(element_id);
+                    var label = document.getElementById("label");
+
+                    if (label.textContent != "Капля"){
+                        object.style.backgroundImage = "url(image/back-1.jpg)";
+                        label.textContent = "Капля";
+                    }
+                    else{
+                        object.style.backgroundImage = " url('image/back.jpg')";
+                        label.textContent = "Надпись";
+                    }
+                    break;
+
+                case "label":
+                    var object = document.getElementById(element_id);
+                    if (object.style.color != "rgb(163, 163, 163)")
+                        object.style.color = "rgb(163, 163, 163)";
+                    else
+                        object.style.color = "#FFF";
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+    </script>
+</body>
+
+</html>
