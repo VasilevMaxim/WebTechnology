@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>7-2</title>
+
+</head>
+
+
+
+<body>
+    <section>
+        <h2>Учет поступления товаров</h2>
+        
+
+        <table border="1">
+
+            <tr>
+                <th>Наименование товара</th>
+                <th>Цена за единицу</th>
+                <th>Количество</th>
+                <th>Стоимость</th>
+            </tr>
+
+            <tr>
+                <td>Стол письменный</td>
+                <td>12000</td>
+                <td>5</td>
+                <td>60000</td>
+            </tr>
+
+            <tr>
+                <td>Стол кухонный</td>
+                <td>8000</td>
+                <td>10</td>
+                <td>80000</td>
+            </tr>
+
+            <tr>
+                <td>Стул</td>
+                <td>20</td>
+                <td>1200</td>
+                <td>24000</td>
+            </tr>
+
+            <tr>
+                <td>Шкаф книжный</td>
+                <td>14200</td>
+                <td>4</td>
+                <td>56800</td>
+            </tr>
+
+            <tr>
+                <td colspan="3">Итого</td>
+                <td>220800</td>
+            </tr>
+
+        </table>
+
+
+        <h3>Изменение цены и количества</h3>
+        <span class="label">Товар</span>
+        <select name="function" id="type_select">
+            <option value="sin">Стол письменный</option>
+            <option value="cos">Стол кухонный</option>
+            <option value="tan">Стул</option>
+            <option value="tan">Шкаф книжный</option>
+        </select>
+
+        <span class="label">Цена</span>
+        <input name="price" type="text" id="price" placeholder="0" onChange="check_input()">
+        <span class = "label_error">! Некорректная цена</span>
+
+        <span class="label">Количество</span>
+        <input name="count" type="text" id="count" placeholder="0" onChange="check_input()">
+        <span class = "label_error">! Некорректное количество</span>
+
+        <input class="submit" type="submit" onclick="calc()" value="Изменить">
+
+    </section>
+</body>
+
+<script>
+
+    function isNumeric(n){
+        return !isNaN(parseFloat(n)) && isFinite(n) || n == "";
+    }
+
+
+    function check_input()
+    {
+        console.log("check");
+        var start_angle = document.getElementById("start_angle").value
+        var end_angle = document.getElementById("end_angle").value
+        var angle_step = document.getElementById("angle_step").value
+
+
+        if (!isNumeric(start_angle)){
+            var error = document.getElementById("start_angle__label_error");
+            error.style.opacity = 1;
+        }
+        else{
+            document.getElementById("start_angle__label_error").style.opacity = 0;
+        }
+
+
+
+        
+        if (!isNumeric(end_angle)){
+            var error = document.getElementById("end_angle__label_error");
+            error.style.opacity = 1;
+        }
+        else{
+            document.getElementById("end_angle__label_error").style.opacity = 0;
+        }
+
+
+
+
+        if (!isNumeric(angle_step)){
+            var error = document.getElementById("angle_step__label_error");
+            error.style.opacity = 1;
+        }
+        else{
+            document.getElementById("angle_step__label_error").style.opacity = 0;
+        }
+
+    }
+
+
+    function calc()
+    {
+        let tables = "";
+        tables += "<h2>Синус</h2>";
+        tables += add_table("sin");
+        tables += "<h2>Косинус</h2>";
+        tables += add_table("cos");
+        tables += "<h2>Тангенс</h2>";
+        tables += add_table("tan");
+
+        gr(tables);
+    }
+
+    function add_table(func)
+    {
+        if (!(func == "sin" || func == "cos" || func == "tan"))
+        {
+            return;
+        }
+
+        let table = 
+        `
+        <table align="center" border="1">
+            <tr align="middle">
+                <td colspan="2">Угол</td>
+                <td rowspan="2">${func}</td>
+            </tr>
+            <tr>
+                <td>в градусах</td>
+                <td>в радианах</td>
+            </tr>    
+        `
+
+
+        let table_end =
+        `
+        </table>
+        `
+
+        var start_angle = parseInt(document.getElementById("start_angle").value)
+        var end_angle = parseInt(document.getElementById("end_angle").value)
+        var angle_step = parseInt(document.getElementById("angle_step").value)
+
+        for (let angle = start_angle; angle <= end_angle; angle += angle_step)
+        {
+            let radian = angle * 3.14 / 180;
+            let result = 0;
+            if (func == "sin")
+            {
+                result = Math.sin(radian);
+            }
+            else if (func == "cos")
+            {
+                result = Math.cos(radian);
+            }
+            else if (func == "tan")
+            {
+                result = Math.tan(radian);
+            }
+            
+
+            table += new_record(angle, radian, result);
+        }
+
+        table += table_end;
+
+        return table;
+    }
+
+    function new_record(angle, radian, result)
+    {
+        console.log("TCL: angle", angle)
+
+        let str = `
+        <tr align="middle">
+            <td>${angle.toFixed(1)}</td>
+            <td>${radian.toFixed(4)}</td>
+            <td>${result.toFixed(4)}</td>
+        </tr>
+        `
+
+        return str;
+    }
+
+    function gr(html)
+    { 
+        grWin=window.open("","","width=650,height=400")
+        grWin.document.write(html)
+    }
+
+</script>
+
+</html>

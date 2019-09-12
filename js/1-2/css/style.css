@@ -22,9 +22,19 @@ p{
     font-weight: 400;
 }
 
-a{
-    color: #FFF;
+.logo_text > a{
+    color: #fff;
     text-decoration: none;
+}
+
+a{
+    text-decoration: none;
+}
+
+
+a:hover
+{
+    text-decoration: underline;
 }
 
 section{

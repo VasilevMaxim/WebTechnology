@@ -3,38 +3,21 @@ body{
     padding: 0;
 
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-
-    user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-select: none;
 }
-
 h2{
-    font-size: 30px;
-    padding: 5px 0 7px;
+    font-size: 40px;
 }
 
+h3{
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
 
 section{
     max-width: 900px;
     width: 100%;
     margin: 0 auto;
-}
-
-
-canvas{
-    border: 1px solid #CCC;
-}
-
-#svg_container{
-    border: 1px solid #CCC;
-}
-
-#point_container{
-    position: relative;
-    border: 1px solid #CCC;
-    overflow: hidden;
 }
 
 select{
@@ -60,7 +43,7 @@ input{
     width: 256px;
     height: 46px;
     padding: 0 20px 0;
-    margin: 5px 10px 20px 0;
+    margin: 5px 10px 3px 0;
 
     border: 1px solid #CCC;
     outline: none;
@@ -120,4 +103,22 @@ span.label_error{
     box-shadow: 0 0 0px 3px #90BBE8;
     background-color: #0067D5;
     color: #FFF;
+}
+
+table
+{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px 0;
+}
+
+th
+{
+    padding: 5px;
+    background-color: #CCC;
+}
+
+td
+{
+    padding: 10px;
 }

@@ -10,7 +10,7 @@ document.write(
     <section>
         <div class="logo">
             <a href="#"><img src="` + icon_path + `" alt="icon"></a>
-            <span class="logo_text"><a href="#">` + name + `</a></span> 
+            <span class="logo_text"><a href="index.html">` + name + `</a></span> 
         </div>
 
         <div class="date">
