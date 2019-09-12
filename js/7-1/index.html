@@ -43,6 +43,9 @@
     function check_input()
     {
         console.log("check");
+
+        let error_return = true;
+
         var start_angle = document.getElementById("start_angle").value
         var end_angle = document.getElementById("end_angle").value
         var angle_step = document.getElementById("angle_step").value
@@ -51,9 +54,12 @@
         if (!isNumeric(start_angle)){
             var error = document.getElementById("start_angle__label_error");
             error.style.opacity = 1;
+            error_return = false;
+            return false;
         }
         else{
             document.getElementById("start_angle__label_error").style.opacity = 0;
+            error_return = true;
         }
 
 
@@ -62,9 +68,12 @@
         if (!isNumeric(end_angle)){
             var error = document.getElementById("end_angle__label_error");
             error.style.opacity = 1;
+            error_return = false;
+            return false;
         }
         else{
             document.getElementById("end_angle__label_error").style.opacity = 0;
+            error_return = true;
         }
 
 
@@ -73,16 +82,24 @@
         if (!isNumeric(angle_step)){
             var error = document.getElementById("angle_step__label_error");
             error.style.opacity = 1;
+            error_return = false;
+            return false;
         }
         else{
             document.getElementById("angle_step__label_error").style.opacity = 0;
+            error_return = true;
         }
 
+        return error_return;
     }
 
 
     function calc()
     {
+
+        if (!check_input())
+            return;
+
         let tables = "";
         tables += "<h2>Синус</h2>";
         tables += add_table("sin");

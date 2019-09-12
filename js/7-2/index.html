@@ -17,7 +17,7 @@
         <h2>Учет поступления товаров</h2>
         
 
-        <table border="1">
+        <table border="1" id="products">
 
             <tr>
                 <th>Наименование товара</th>
@@ -65,19 +65,19 @@
         <h3>Изменение цены и количества</h3>
         <span class="label">Товар</span>
         <select name="function" id="type_select">
-            <option value="sin">Стол письменный</option>
-            <option value="cos">Стол кухонный</option>
-            <option value="tan">Стул</option>
-            <option value="tan">Шкаф книжный</option>
+            <option value="Стол письменный">Стол письменный</option>
+            <option value="Стол кухонный">Стол кухонный</option>
+            <option value="Стул">Стул</option>
+            <option value="Шкаф книжный">Шкаф книжный</option>
         </select>
 
         <span class="label">Цена</span>
         <input name="price" type="text" id="price" placeholder="0" onChange="check_input()">
-        <span class = "label_error">! Некорректная цена</span>
+        <span id="price__label_error" class = "label_error">! Некорректная цена</span>
 
         <span class="label">Количество</span>
         <input name="count" type="text" id="count" placeholder="0" onChange="check_input()">
-        <span class = "label_error">! Некорректное количество</span>
+        <span id="count__label_error" class = "label_error">! Некорректное количество</span>
 
         <input class="submit" type="submit" onclick="calc()" value="Изменить">
 
@@ -87,141 +87,87 @@
 <script>
 
     function isNumeric(n){
-        return !isNaN(parseFloat(n)) && isFinite(n) || n == "";
+        return !isNaN(parseFloat(n)) && isFinite(n);
     }
 
 
     function check_input()
     {
-        console.log("check");
-        var start_angle = document.getElementById("start_angle").value
-        var end_angle = document.getElementById("end_angle").value
-        var angle_step = document.getElementById("angle_step").value
+        var price = document.getElementById("price").value
+        var count = document.getElementById("count").value
 
+        let error_return = true;
 
-        if (!isNumeric(start_angle)){
-            var error = document.getElementById("start_angle__label_error");
+        if (!isNumeric(price) || price == "")
+        {
+            var error = document.getElementById("price__label_error");
             error.style.opacity = 1;
+            error_return = false;
         }
-        else{
-            document.getElementById("start_angle__label_error").style.opacity = 0;
+        else
+        {
+            document.getElementById("price__label_error").style.opacity = 0;
+            error_return = true;
         }
 
 
-
-        
-        if (!isNumeric(end_angle)){
-            var error = document.getElementById("end_angle__label_error");
+        if (!isNumeric(count) || count == "")
+        {
+            var error = document.getElementById("count__label_error");
             error.style.opacity = 1;
+            error_return = false;
         }
-        else{
-            document.getElementById("end_angle__label_error").style.opacity = 0;
-        }
-
-
-
-
-        if (!isNumeric(angle_step)){
-            var error = document.getElementById("angle_step__label_error");
-            error.style.opacity = 1;
-        }
-        else{
-            document.getElementById("angle_step__label_error").style.opacity = 0;
+        else
+        {
+            document.getElementById("count__label_error").style.opacity = 0;
+            error_return = true;
         }
 
+        return error_return;
     }
 
 
     function calc()
     {
-        let tables = "";
-        tables += "<h2>Синус</h2>";
-        tables += add_table("sin");
-        tables += "<h2>Косинус</h2>";
-        tables += add_table("cos");
-        tables += "<h2>Тангенс</h2>";
-        tables += add_table("tan");
 
-        gr(tables);
-    }
-
-    function add_table(func)
-    {
-        if (!(func == "sin" || func == "cos" || func == "tan"))
+        if (!check_input())
         {
             return;
         }
 
-        let table = 
-        `
-        <table align="center" border="1">
-            <tr align="middle">
-                <td colspan="2">Угол</td>
-                <td rowspan="2">${func}</td>
-            </tr>
-            <tr>
-                <td>в градусах</td>
-                <td>в радианах</td>
-            </tr>    
-        `
+        let select = document.getElementById("type_select");
+        let price = document.getElementById("price");
+        let count = document.getElementById("count");
+      
 
+        let rows = document.all.products.rows;
+       
+        let full_price = 0;
 
-        let table_end =
-        `
-        </table>
-        `
-
-        var start_angle = parseInt(document.getElementById("start_angle").value)
-        var end_angle = parseInt(document.getElementById("end_angle").value)
-        var angle_step = parseInt(document.getElementById("angle_step").value)
-
-        for (let angle = start_angle; angle <= end_angle; angle += angle_step)
+        for (let i = 1; i < rows.length - 1; i++)
         {
-            let radian = angle * 3.14 / 180;
-            let result = 0;
-            if (func == "sin")
-            {
-                result = Math.sin(radian);
-            }
-            else if (func == "cos")
-            {
-                result = Math.cos(radian);
-            }
-            else if (func == "tan")
-            {
-                result = Math.tan(radian);
-            }
-            
+            let rowsss = rows[i];
+            let value = rowsss.cells[0].outerText
 
-            table += new_record(angle, radian, result);
+            if (value == select.value)
+            {
+                rowsss.cells[1].innerHTML = parseInt(price.value);
+                rowsss.cells[2].innerHTML = parseInt(count.value);
+                rowsss.cells[3].innerHTML = parseInt(price.value) * parseInt(count.value);
+
+                full_price += parseInt(rowsss.cells[3].outerText)
+            }
+            else
+            {
+                full_price += parseInt(rowsss.cells[3].outerText)
+            }
+
         }
-
-        table += table_end;
-
-        return table;
+         
+        rows[rows.length - 1].cells[1].innerHTML = full_price;
     }
 
-    function new_record(angle, radian, result)
-    {
-        console.log("TCL: angle", angle)
-
-        let str = `
-        <tr align="middle">
-            <td>${angle.toFixed(1)}</td>
-            <td>${radian.toFixed(4)}</td>
-            <td>${result.toFixed(4)}</td>
-        </tr>
-        `
-
-        return str;
-    }
-
-    function gr(html)
-    { 
-        grWin=window.open("","","width=650,height=400")
-        grWin.document.write(html)
-    }
-
+   
 </script>
 
 </html>
