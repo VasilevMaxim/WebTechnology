@@ -120,7 +120,7 @@
 
         let table = 
         `
-        <table align="center" border="1">
+        <table align="center" border="1" style="border-collapse: collapse;">
             <tr align="middle">
                 <td colspan="2">Угол</td>
                 <td rowspan="2">${func}</td>
@@ -137,13 +137,47 @@
         </table>
         `
 
-        var start_angle = parseInt(document.getElementById("start_angle").value)
-        var end_angle = parseInt(document.getElementById("end_angle").value)
-        var angle_step = parseInt(document.getElementById("angle_step").value)
+        var start_angle = parseFloat(document.getElementById("start_angle").value)
+        var end_angle = parseFloat(document.getElementById("end_angle").value)
+        var angle_step = parseFloat(document.getElementById("angle_step").value)
+
+        if (end_angle < start_angle && angle_step < 0)
+        {
+        
+            
+            for (let angle = start_angle; angle >= end_angle; angle += angle_step)
+            {
+                let radian = angle * 3.1415926 / 180.;
+                let result = 0;
+                if (func == "sin")
+                {
+                    result = Math.sin(radian);
+                }
+                else if (func == "cos")
+                {
+                    result = Math.cos(radian);
+                }
+                else if (func == "tan")
+                {
+                    if (Math.abs(angle - 90.00) < 0.000001 || Math.abs(angle + 90.00) < 0.000001)
+                    {
+                        result = NaN;
+                        table += new_record(angle, radian, result);
+                        continue;
+                    }
+                        
+
+                    result = Math.tan(radian);
+                }
+                
+
+                table += new_record(angle, radian, result);
+            }
+        }
 
         for (let angle = start_angle; angle <= end_angle; angle += angle_step)
         {
-            let radian = angle * 3.14 / 180;
+            let radian = angle * 3.1415926 / 180.;
             let result = 0;
             if (func == "sin")
             {
@@ -155,6 +189,14 @@
             }
             else if (func == "tan")
             {
+                if (Math.abs(angle - 90.00) < 0.000001 || Math.abs(angle + 90.00) < 0.000001)
+                {
+                    result = NaN;
+                    table += new_record(angle, radian, result);
+                    continue;
+                }
+                    
+
                 result = Math.tan(radian);
             }
             
@@ -169,13 +211,13 @@
 
     function new_record(angle, radian, result)
     {
-        console.log("TCL: angle", angle)
+        console.log("TCL: angle", result)
 
         let str = `
         <tr align="middle">
-            <td>${angle.toFixed(1)}</td>
-            <td>${radian.toFixed(4)}</td>
-            <td>${result.toFixed(4)}</td>
+            <td>${angle.toFixed(2)}</td>
+            <td>${radian.toFixed(2)}</td>
+            <td>${isNaN(result) ? "Inf" : result.toFixed(2)}</td>
         </tr>
         `
 

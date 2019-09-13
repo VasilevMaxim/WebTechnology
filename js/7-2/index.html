@@ -151,20 +151,20 @@
 
             if (value == select.value)
             {
-                rowsss.cells[1].innerHTML = parseInt(price.value);
+                rowsss.cells[1].innerHTML = parseFloat(price.value).toFixed(2);
                 rowsss.cells[2].innerHTML = parseInt(count.value);
-                rowsss.cells[3].innerHTML = parseInt(price.value) * parseInt(count.value);
+                rowsss.cells[3].innerHTML = (parseFloat(price.value) * parseInt(count.value)).toFixed(2);
 
-                full_price += parseInt(rowsss.cells[3].outerText)
+                full_price += parseFloat(rowsss.cells[3].outerText)
             }
             else
             {
-                full_price += parseInt(rowsss.cells[3].outerText)
+                full_price += parseFloat(rowsss.cells[3].outerText)
             }
 
         }
          
-        rows[rows.length - 1].cells[1].innerHTML = full_price;
+        rows[rows.length - 1].cells[1].innerHTML = full_price.toFixed(2);
     }
 
    

@@ -14,22 +14,56 @@
 
 
 
-    <div id="square" style="top:50px; left:600px; position: absolute"></div>
+    <div id="field" class="field" style="top:50px; left:50px; position: absolute; width: 1000px; height: 500px;">
+
+    </div>
+
+    <div id="square" style="top:50px; left:50px; position: absolute; width: 100px; height: 100px;"></div>
 
 
 
 
     <script>
       
-        dragElement(document.getElementById(("square")));
+        dragElement(document.getElementById("square"), document.getElementById("field"));
 
-        function dragElement(elmnt) {
+
+
+        function dragElement(elmnt, parent) 
+        {
             var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
         
             elmnt.onmousedown = dragMouseDown;
-            
+            elmnt.onmouseover = run_;
 
+            let direction_x = 1;
+            let direction_y = 1;
+            
+            function run_(e)
+            {
+                
+                let el_width = parseInt(elmnt.style.width.replace("px", ""));
+                let el_height = parseInt(elmnt.style.height.replace("px", ""));
+
+                elmnt.style.top = (elmnt.offsetTop + el_height  * direction_x) + "px";
+                elmnt.style.left = (elmnt.offsetLeft + el_width * direction_y) + "px";
+
+                direction_x *= (Math.random() - 0.5) < 0 ? -1 : 1;
+                direction_y *= (Math.random() - 0.5) < 0 ? -1 : 1;
+
+                if (check_out())
+                {
+                    direction_x *= -1;
+                    direction_y *= -1;
+
+                    direction_x *= (Math.random() - 0.8) < 0 ? -1 : 1;
+                    direction_y *= (Math.random() - 0.8) < 0 ? -1 : 1;  
+                }
+
+                check_out();
+            }
+            
             function dragMouseDown(e) {
                 e = e || window.event;
              
@@ -50,6 +84,50 @@
                
                 elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
                 elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+
+
+               check_out();
+            }
+
+            function check_out()
+            {
+                let el_top = parseInt(elmnt.style.top.replace("px", ""));
+                let el_left = parseInt(elmnt.style.left.replace("px", ""));
+            
+                let el_width = parseInt(elmnt.style.width.replace("px", ""));
+                let el_height = parseInt(elmnt.style.height.replace("px", ""));
+
+                let parent_top = parseInt(parent.style.top.replace("px", ""));
+                let parent_left = parseInt(parent.style.left.replace("px", ""));
+                let parent_width = parseInt(parent.style.width.replace("px", ""));
+                console.log("TCL: elementDrag -> parent_width", parent_width)
+                let parent_height = parseInt(parent.style.height.replace("px", ""));
+                console.log("TCL: elementDrag -> parent_height", parent_height)
+
+
+                if (el_top <= parent_top)
+                {
+                    elmnt.style.top = parent_top + "px";
+                    return true;
+                }
+
+                if (el_left <= parent_left)
+                {
+                    elmnt.style.left = parent_left + "px";
+                    return true;
+                }
+
+                if (el_top + el_height >= parent_top + parent_height)
+                {
+                    elmnt.style.top = (parent_top + parent_height - el_height) + "px";
+                    return true;
+                }
+
+                if (el_left + el_width >= parent_left + parent_width)
+                {
+                    elmnt.style.left = (parent_left + parent_width - el_width) + "px";
+                    return true;
+                }
             }
 
             function closeDragElement() {

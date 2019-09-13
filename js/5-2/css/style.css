@@ -30,3 +30,10 @@ section{
 
     background-color: #23A8F2;
 }
+
+.field{
+    width: 400px;
+    height: 400px;
+
+    background-color: #ccc;
+}

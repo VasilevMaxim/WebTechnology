@@ -2,14 +2,16 @@ function isNumeric(n){
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function check(){
+function check()
+{
 
     var type = document.getElementById("type_select").value
     var material_type = document.getElementById("material_type_select").value
     var count = document.getElementById("count_order").value
 
-    if (count == ''){
+    if (count == '' || count == '0'){
        alert("Количество не введено");
+       
        return false;
     }
 
