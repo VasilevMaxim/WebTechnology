@@ -47,7 +47,7 @@
             const y = parseFloat(square.style.top);
             const x = parseFloat(square.style.left);
        
-            const rad = distance_to_center / 200;  
+            const rad = 1;  
 
 
             const dx = rad * Math.cos(t);
@@ -59,7 +59,7 @@
             square.style.left = x + dx + "px";
 
 
-            t += 0.005;
+            t += 1. / distance_to_center;
         }
 
 
