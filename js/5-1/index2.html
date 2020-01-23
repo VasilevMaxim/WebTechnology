@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>5-1</title>
+
+</head>
+<body>
+   
+
+        
+    <div id="square" style="top:50px; left:600px; width: 30px; height: 30px; position: absolute"></div>
+
+
+    <div id="center" style="top:50%; left:50%; width: 5px; height: 5px; position: absolute; background-color: black;"></div>
+
+    <script>
+        const width =  window.innerWidth;
+        const height = window.innerHeight;
+
+        const half_width = width / 2;
+        const half_height = height / 2;
+
+        var play = false;
+
+        console.log(half_width, height);
+    
+
+        var dododo = window.setInterval("move()", 10 );
+        var t = 0;
+      
+        
+        var square = document.getElementById("square");
+
+        
+        var distance_to_center = 100;
+
+        function move()
+        {
+            if (!play)
+                return;
+
+
+            const y = parseFloat(square.style.top);
+            const x = parseFloat(square.style.left);
+       
+            const rad = distance_to_center / 200;  
+
+
+            const dx = rad * Math.cos(t);
+            const dy = rad * Math.sin(t);
+            
+            //console.log(dx, dy);
+
+            square.style.top = y + dy + "px";
+            square.style.left = x + dx + "px";
+
+
+            t += 0.005;
+        }
+
+
+        dragElement(square);
+
+        function dragElement(elmnt) 
+        {
+            
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+
+            elmnt.onmousedown = dragMouseDown;
+            
+
+            function dragMouseDown(e) 
+            {
+                play = false;
+            
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+        
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) 
+            {
+
+        
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+            
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() 
+            {
+               
+
+
+                const y = parseInt(square.style.top);
+                const x = parseInt(square.style.left);
+                const w = parseInt(square.style.width);
+                const h = parseInt(square.style.height);
+                
+                const center_square_x = x + w / 2;
+                const center_square_y = y + h / 2;
+
+                const sqrt_value_1 = (center_square_x - half_width) * (center_square_x - half_width);
+                const sqrt_value_2 = (center_square_y - half_height) * (center_square_y - half_height);
+
+
+                distance_to_center = Math.round(Math.sqrt(sqrt_value_1 + sqrt_value_2));
+            
+                console.log(distance_to_center);
+
+
+                const start_angle = Math.asin((center_square_y - half_height) / distance_to_center);
+                console.log(start_angle, start_angle * 180 / Math.PI, Math.round((start_angle + 3 *  Math.PI) * 180 / Math.PI) % 360);
+
+
+                if (center_square_x < half_width)
+                {
+                    t = start_angle + 1.5 * Math.PI;
+                }
+                else
+                {
+                    t = start_angle + .5 * Math.PI;
+                }
+
+                play = true;
+
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+    </script>
+
+
+
+</body>  
+            
+</html>
