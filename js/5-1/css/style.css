@@ -24,16 +24,8 @@ section{
     position: relative;
 }
 
-.square{
-    width: 100px;
-    height: 100px;
-
+#circle {
     background-color: #23A8F2;
-}
 
-#square{
-    width: 100px;
-    height: 100px;
-
-    background-color: #23A8F2;
+    border-radius: 50%;
 }
