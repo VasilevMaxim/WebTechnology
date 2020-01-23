@@ -10,76 +10,90 @@
 </head>
 <body>
    
-
+    <button onclick="toogleRunIT()">Включить/Выключить анимацию</button>
         
-    <div id="square" style="top:50px; left:600px; width: 30px; height: 30px; position: absolute"></div>
+    <div id="circle" style="top:50px; left:600px; width: 30px; height: 30px; position: absolute"></div>
 
 
     <div id="center" style="top:50%; left:50%; width: 5px; height: 5px; position: absolute; background-color: black;"></div>
 
     <script>
-        const width =  window.innerWidth;
-        const height = window.innerHeight;
-
-        const half_width = width / 2;
-        const half_height = height / 2;
-
+        
+        // переменная отвечающая за то идет ли сейчас анимация или нет
         var play = false;
 
-        console.log(half_width, height);
-    
-
+     
+        // устанавливаем функцию move как функцию которая будет выполняться каждые 10 мс
         var dododo = window.setInterval("move()", 10 );
-        var t = 0;
+
+        // угол поворота
+        var angle = 0;
       
-        
-        var square = document.getElementById("square");
+        // наше все
+        var circle = document.getElementById("circle");
 
-        
-        var distance_to_center = 100;
+        // настраиваем наше все на возможность его таскать
+        dragElement(circle);
 
+        // расстояние до центра
+        var distance_to_center = 0;
+
+        // функция для включения/выключения анимации
+        function toogleRunIT()
+        {
+            play = !play;
+        }
+
+        // та функция повторяющаяяся каждые 10мс
         function move()
         {
+            // если не надо анимировать выходим
             if (!play)
                 return;
 
-
-            const y = parseFloat(square.style.top);
-            const x = parseFloat(square.style.left);
+            // положение нашего всего
+            const y = parseFloat(circle.style.top);
+            const x = parseFloat(circle.style.left);
        
+            // радиус равен дефолтному одном
             const rad = 1;  
 
-
-            const dx = rad * Math.cos(t);
-            const dy = rad * Math.sin(t);
+            // по формулам находим сдвиг по координатам
+            const dx = rad * Math.cos(angle);
+            const dy = rad * Math.sin(angle);
             
-            //console.log(dx, dy);
+            
+            // сдвигаем тело
+            circle.style.top = y + dy + "px";
+            circle.style.left = x + dx + "px";
 
-            square.style.top = y + dy + "px";
-            square.style.left = x + dx + "px";
-
-
-            t += 1. / distance_to_center;
+            // чертова магия, я это выражение подобрал исходя из экспериментов 
+            // но думаю это что-то типа углового коффициента поворота
+            angle += 1. / distance_to_center;
         }
 
 
-        dragElement(square);
-
+        
+        // функция для настройки таскания
         function dragElement(elmnt) 
         {
-            
+            // позиции
             var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-
+            // устанавлваем обработчик на событие, когда кнопка мыши нажата на элемент
             elmnt.onmousedown = dragMouseDown;
             
 
             function dragMouseDown(e) 
             {
+                // анимация приостанавливается
                 play = false;
             
+                // позиция устанавливается в позицию курсора
                 pos3 = e.clientX;
                 pos4 = e.clientY;
+
+                // какая то гребанная магия, копировал уже давно с инета
                 document.onmouseup = closeDragElement;
         
                 document.onmousemove = elementDrag;
@@ -87,7 +101,7 @@
 
             function elementDrag(e) 
             {
-
+                // какая то гребанная магия, копировал уже давно с инета
         
                 pos1 = pos3 - e.clientX;
                 pos2 = pos4 - e.clientY;
@@ -100,41 +114,53 @@
 
             function closeDragElement() 
             {
-               
+
+                // размеры нашего окна
+                const width =  window.innerWidth;
+                const height = window.innerHeight;
+
+                const half_width = width / 2;
+                const half_height = height / 2;
 
 
-                const y = parseInt(square.style.top);
-                const x = parseInt(square.style.left);
-                const w = parseInt(square.style.width);
-                const h = parseInt(square.style.height);
+                // положение и размеры нашегов всего
+                const y = parseInt(circle.style.top);
+                const x = parseInt(circle.style.left);
+                const w = parseInt(circle.style.width);
+                const h = parseInt(circle.style.height);
                 
-                const center_square_x = x + w / 2;
-                const center_square_y = y + h / 2;
-
-                const sqrt_value_1 = (center_square_x - half_width) * (center_square_x - half_width);
-                const sqrt_value_2 = (center_square_y - half_height) * (center_square_y - half_height);
+                // находим центр нашего всего
+                const center_circle_x = x + w / 2;
+                const center_circle_y = y + h / 2;
 
 
+                // вынес расчеты в разные переменные для удобства
+                const sqrt_value_1 = (center_circle_x - half_width) * (center_circle_x - half_width);
+                const sqrt_value_2 = (center_circle_y - half_height) * (center_circle_y - half_height);
+
+                // считаем расстояние до центра
                 distance_to_center = Math.round(Math.sqrt(sqrt_value_1 + sqrt_value_2));
             
-                console.log(distance_to_center);
+                // сертова магия, находим угол на который повернуто наше относительно центра
+                
+                const start_angle = Math.asin((center_circle_y - half_height) / distance_to_center);
+                
 
-
-                const start_angle = Math.asin((center_square_y - half_height) / distance_to_center);
-                console.log(start_angle, start_angle * 180 / Math.PI, Math.round((start_angle + 3 *  Math.PI) * 180 / Math.PI) % 360);
-
-
-                if (center_square_x < half_width)
+                // в зависимости от стороны, мы должны установить угол в текущий угол нашего всего
+                // чтобы пристарте анимации мы пошли не сначала, а с текущего угла нашего всего
+                if (center_circle_x < half_width)
                 {
-                    t = start_angle + 1.5 * Math.PI;
-                }
-                else
+                    angle = -(start_angle + .5 * Math.PI);
+                }   
+                else 
                 {
-                    t = start_angle + .5 * Math.PI;
+                    angle = start_angle + .5 * Math.PI;
                 }
 
+                // играем
                 play = true;
 
+                // сбрасываем прослушиватели 
                 document.onmouseup = null;
                 document.onmousemove = null;
             }
