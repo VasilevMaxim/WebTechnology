@@ -27,9 +27,17 @@
         const center_x = 600; 
         const center_y = 300; 
 
-        
+        const canvas = document.getElementById("myCanvas");
+        const context = canvas.getContext("2d");
        
-        
+        context.strokeStyle = "#ccc";
+        context.beginPath();
+        context.moveTo(center_x, center_y);
+        context.arc(center_x, center_y, 100, 0, 360, false);
+        context.fillStyle = '#ccc';
+        context.fill();
+        context.closePath();
+        context.stroke();
 
         function isNumeric(n)
         {
@@ -64,19 +72,15 @@
             start_angle = start_angle / 180 * Math.PI;
             end_angle = end_angle / 180 * Math.PI;
 
-            var canvas = document.getElementById("myCanvas");
-            var context = canvas.getContext("2d");
-
-            
-            context.strokeStyle = "#ccc";
-            
             context.clearRect(0, 0, canvas.width, canvas.height);
 
+
+            context.strokeStyle = "#ccc";
             context.beginPath();
             context.moveTo(center_x, center_y);
             context.arc(center_x, center_y, 100, 0, 360, false);
             context.fillStyle = '#ccc';
-	          context.fill();
+	        context.fill();
             context.closePath();
             context.stroke();
 
@@ -86,7 +90,7 @@
             context.moveTo(center_x, center_y);
             context.arc(center_x, center_y, 100, start_angle, end_angle, false);
             context.fillStyle = 'red';
-	          context.fill();
+	        context.fill();
             context.closePath();
             context.stroke();
 
