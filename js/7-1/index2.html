@@ -73,13 +73,15 @@
         function draw()
         {
             // углы
-            var start_angle = document.getElementById("start_angle").value
-            var end_angle = document.getElementById("end_angle").value
+            var start_angle_raw = document.getElementById("start_angle").value
+            var end_angle_raw = document.getElementById("end_angle").value
+
 
             // преобразуем в радианы
-            start_angle = start_angle / 180 * Math.PI;
-            end_angle = end_angle / 180 * Math.PI;
+            start_angle = (start_angle_raw - end_angle_raw) / 180. * Math.PI;
+            end_angle = -start_angle_raw / 180. * Math.PI;
 
+    
             // очищаем canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
 
