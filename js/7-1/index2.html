@@ -23,13 +23,15 @@
     Ваш браузер не поддерживает Canvas
     </canvas>
     <script>
-
-        const center_x = 600; 
-        const center_y = 300; 
-
         const canvas = document.getElementById("myCanvas");
         const context = canvas.getContext("2d");
        
+        // центр нашего canvas
+        const center_x = canvas.width / 2; 
+        const center_y = canvas.height / 2; 
+
+
+        // рисуем серый круг
         context.strokeStyle = "#ccc";
         context.beginPath();
         context.moveTo(center_x, center_y);
@@ -39,10 +41,13 @@
         context.closePath();
         context.stroke();
 
+        // функция для проверки корректности ввода
         function isNumeric(n)
         {
             return !isNaN(parseFloat(n)) && isFinite(n) || n == "";
         }
+
+        // функция для проверки корректности ввода
         function check_input()
         {
             console.log("Check");
@@ -64,17 +69,21 @@
             }
         }
 
+        // основная функция рисования
         function draw()
         {
+            // углы
             var start_angle = document.getElementById("start_angle").value
             var end_angle = document.getElementById("end_angle").value
 
+            // преобразуем в радианы
             start_angle = start_angle / 180 * Math.PI;
             end_angle = end_angle / 180 * Math.PI;
 
+            // очищаем canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
 
-
+            // рисуем серый круг
             context.strokeStyle = "#ccc";
             context.beginPath();
             context.moveTo(center_x, center_y);
@@ -84,8 +93,9 @@
             context.closePath();
             context.stroke();
 
-            context.strokeStyle = "red";
 
+            // рисуем область
+            context.strokeStyle = "red";
             context.beginPath();
             context.moveTo(center_x, center_y);
             context.arc(center_x, center_y, 100, start_angle, end_angle, false);
