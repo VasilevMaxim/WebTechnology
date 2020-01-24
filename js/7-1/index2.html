@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <span class="label">От</span>
+    <input name="start_angle" type="text" id="start_angle" placeholder="0" onchange="check_input()">
+    <br>
+
+    <span class="label">До</span>
+    <input name="end_angle" type="text" id="end_angle" placeholder="0" onchange="check_input()">
+    <br>
+
+    <input class="submit" type="submit" value="Нарисовать" onclick="draw()">
+    <br>
+
+    <canvas id="myCanvas" width="1200" height="600"
+    style="background-color:#eee; border:1px solid #ccc;">
+    Ваш браузер не поддерживает Canvas
+    </canvas>
+    <script>
+
+        const center_x = 600; 
+        const center_y = 300; 
+
+        
+       
+        
+
+        function isNumeric(n)
+        {
+            return !isNaN(parseFloat(n)) && isFinite(n) || n == "";
+        }
+        function check_input()
+        {
+            console.log("Check");
+
+            const start_angle = document.getElementById("start_angle").value
+            const end_angle = document.getElementById("end_angle").value
+        
+
+            if (!isNumeric(start_angle))
+            {
+                alert("Стартовый угол некорректен");
+                document.getElementById("start_angle").value = "";
+            }
+           
+            if (!isNumeric(end_angle))
+            {
+                alert("Конечный угол некорректен");
+                document.getElementById("end_angle").value = "";
+            }
+        }
+
+        function draw()
+        {
+            var start_angle = document.getElementById("start_angle").value
+            var end_angle = document.getElementById("end_angle").value
+
+            start_angle = start_angle / 180 * Math.PI;
+            end_angle = end_angle / 180 * Math.PI;
+
+            var canvas = document.getElementById("myCanvas");
+            var context = canvas.getContext("2d");
+
+            
+            context.strokeStyle = "#ccc";
+            
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            context.beginPath();
+            context.moveTo(center_x, center_y);
+            context.arc(center_x, center_y, 100, 0, 360, false);
+            context.fillStyle = '#ccc';
+	          context.fill();
+            context.closePath();
+            context.stroke();
+
+            context.strokeStyle = "red";
+
+            context.beginPath();
+            context.moveTo(center_x, center_y);
+            context.arc(center_x, center_y, 100, start_angle, end_angle, false);
+            context.fillStyle = 'red';
+	          context.fill();
+            context.closePath();
+            context.stroke();
+
+        }
+
+    </script>
+</body>
+</html>
