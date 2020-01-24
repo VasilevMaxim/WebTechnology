@@ -11,17 +11,48 @@
 <body>
    
     <button onclick="toogleRunIT()">Включить/Выключить анимацию</button>
-        
-    <div id="circle" style="top:50px; left:600px; width: 30px; height: 30px; position: absolute"></div>
+    <input id="direction" type="checkbox" onchange="toogleDirection()" checked>    
+    <label for="direction">По часовой/против часовой</label>
 
+
+    <div id="field" style="width: 700px; height: 700px; position: absolute; background-color: #cccccc; border-radius: 50%;"></div>
+
+    <div id="circle" style="top:100px; left:800px; width: 30px; height: 30px; position: absolute;"></div>
+
+   
 
     <div id="center" style="top:50%; left:50%; width: 5px; height: 5px; position: absolute; background-color: black;"></div>
 
     <script>
         
+        // размеры нашего окна
+        const width =  window.innerWidth;
+        const height = window.innerHeight;
+
+        const half_width = width / 2;
+        const half_height = height / 2;
+
+
+        const field = document.getElementById("field");
+
+        const field_width = parseFloat(field.style.width);
+        const field_height = parseFloat(field.style.height);
+
+        const field_center_x = half_width - field_width/2;
+        const field_center_y = half_height - field_height/2;
+
+        const field_radius = field_width/2;
+
+        // сдвигаем поле в центр
+        field.style.top = field_center_y + "px";
+        field.style.left = field_center_x + "px";
+
+
+
         // переменная отвечающая за то идет ли сейчас анимация или нет
         var play = false;
 
+        var direction = 1;
      
         // устанавливаем функцию move как функцию которая будет выполняться каждые 10 мс
         var dododo = window.setInterval("move()", 10 );
@@ -44,6 +75,12 @@
             play = !play;
         }
 
+        // функция для изменения направления
+        function toogleDirection()
+        {
+            direction = !direction;
+        }
+
         // та функция повторяющаяяся каждые 10мс
         function move()
         {
@@ -59,17 +96,35 @@
             const rad = 1;  
 
             // по формулам находим сдвиг по координатам
-            const dx = rad * Math.cos(angle);
-            const dy = rad * Math.sin(angle);
+            var dx = rad * Math.cos(angle);
+            var dy = rad * Math.sin(angle);
             
-            
+
+            // если в обратную сторону то и сдвиги нужно использовать с минусом
+            if (!direction)
+            {
+                dx = -dx;
+                dy = -dy;
+            }
+        
+
             // сдвигаем тело
             circle.style.top = y + dy + "px";
             circle.style.left = x + dx + "px";
 
             // чертова магия, я это выражение подобрал исходя из экспериментов 
             // но думаю это что-то типа углового коффициента поворота
-            angle += 1. / distance_to_center;
+
+            if (direction)
+            {
+                angle += 1. / distance_to_center;
+            }
+
+            // в зависимости от направления либо прибыавляем либо отнимаем
+            else
+            {
+                angle -= 1. / distance_to_center;
+            }
         }
 
 
@@ -103,25 +158,87 @@
             {
                 // какая то гребанная магия, копировал уже давно с инета
         
+                // положение и размеры нашегов всего
+                const y = parseInt(circle.style.top);
+                const x = parseInt(circle.style.left);
+                const w = parseInt(circle.style.width);
+                const h = parseInt(circle.style.height);
+                
+                // находим центр нашего всего
+                const center_circle_x = x + w / 2;
+                const center_circle_y = y + h / 2;
+
+
+                // вынес расчеты в разные переменные для удобства
+                const sqrt_value_1 = (center_circle_x - half_width) * (center_circle_x - half_width);
+                const sqrt_value_2 = (center_circle_y - half_height) * (center_circle_y - half_height);
+
+                // считаем расстояние до центра
+                distance_to_center = Math.round(Math.sqrt(sqrt_value_1 + sqrt_value_2));
+
+
+                const radius = parseInt(elmnt.style.width) / 2;
+
+                // если мы вышли за пределы поля
+                if (distance_to_center + radius > field_radius)
+                {
+                    // поло
+                    const y = parseInt(elmnt.style.top);
+                    const x = parseInt(elmnt.style.left);
+
+                    
+
+                    const shift = distance_to_center - field_radius;
+
+
+                    // сдвигаем обратно на максимальное отдаление от центра
+                    if (y > half_height)
+                    {
+                        if (x > half_width)
+                        {
+                            elmnt.style.top = (y - shift - radius) + "px";
+                            elmnt.style.left = (x - shift - radius) + "px";
+                        }
+                        else
+                        {
+                            elmnt.style.top = (y - shift - radius) + "px";
+                            elmnt.style.left = (x + shift + radius) + "px";
+                        }
+                    }
+                    else
+                    {
+                        if (x > half_width)
+                        {
+                            elmnt.style.top = (y + shift + radius) + "px";
+                            elmnt.style.left = (x - shift - radius) + "px";
+                        }
+                        else
+                        {
+                            elmnt.style.top = (y + shift + radius) + "px";
+                            elmnt.style.left = (x + shift + radius) + "px";
+                        }
+                    }
+
+                    
+
+                    return;
+                }
+                
+
                 pos1 = pos3 - e.clientX;
                 pos2 = pos4 - e.clientY;
                 pos3 = e.clientX;
                 pos4 = e.clientY;
             
+                
+                
+
                 elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
                 elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
             }
 
             function closeDragElement() 
             {
-
-                // размеры нашего окна
-                const width =  window.innerWidth;
-                const height = window.innerHeight;
-
-                const half_width = width / 2;
-                const half_height = height / 2;
-
 
                 // положение и размеры нашегов всего
                 const y = parseInt(circle.style.top);
