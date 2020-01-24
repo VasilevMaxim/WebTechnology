@@ -73,12 +73,31 @@
         function draw()
         {
             // углы
-            var start_angle_raw = document.getElementById("start_angle").value
-            var end_angle_raw = document.getElementById("end_angle").value
+            var start_angle_raw = parseFloat(document.getElementById("start_angle").value);
+            var end_angle_raw = parseFloat(document.getElementById("end_angle").value);
 
+            // если начальный угол больше, меняем местами
+            if (start_angle_raw > end_angle_raw)
+            {
+                var temp = start_angle_raw;
+                start_angle_raw = end_angle_raw;
+                end_angle_raw = temp;
+            }
 
+            // если угол меньше 0 то приводим его к положительному углу 
+            if (start_angle_raw < 0)
+            {
+                start_angle_raw = 360 + start_angle_raw;
+            }
+            // если угол меньше 0 то приводим его к положительному углу 
+            if (end_angle_raw < 0)
+            {
+                end_angle_raw = 360 + end_angle_raw;
+            }
+
+     
             // преобразуем в радианы
-            start_angle = (start_angle_raw - end_angle_raw) / 180. * Math.PI;
+            start_angle = -end_angle_raw / 180. * Math.PI;
             end_angle = -start_angle_raw / 180. * Math.PI;
 
     
